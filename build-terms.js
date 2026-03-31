@@ -4,12 +4,14 @@ const index = fs.readFileSync('index.html', 'utf8');
 
 const navMatch = index.match(/<nav>[\s\S]*?<\/nav>/);
 let nav = navMatch ? navMatch[0] : '';
+nav = nav.replace('<li><a href="#">Account</a></li>', '<li><a href="account.html">Account</a></li>');
 nav = nav.replace('class="active"', '');
 
 const footerMatch = index.match(/<footer>[\s\S]*?<\/footer>/);
 let footer = footerMatch ? footerMatch[0] : '';
 footer = footer.replace('<li><a href="#">Privacy Policy</a></li>', '<li><a href="privacy.html">Privacy Policy</a></li>');
 footer = footer.replace('<li><a href="#">Terms of Service</a></li>', '<li><a href="terms.html">Terms of Service</a></li>');
+footer = footer.replace('<li><a href="#">Cookies</a></li>', '<li><a href="privacy.html#cookies-section">Cookies</a></li>');
 
 const termsContent = `
   <section class="legal-section">
@@ -92,7 +94,7 @@ const html = `<!DOCTYPE html>
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <script type="module" src="auth-guard.js"></script>
-    <script type="module" src="cookie-consent.js"></script>
+    <script type="module" src="legals-init.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
@@ -105,6 +107,8 @@ const html = `<!DOCTYPE html>
             --accent: #e8490f;
             --white: #ffffff;
         }
+        html { -ms-overflow-style: none; scrollbar-width: none; }
+        html::-webkit-scrollbar { display: none; }
         body { font-family: 'DM Sans', sans-serif; background: var(--black); color: var(--text); line-height: 1.6; overflow-x: hidden; }
         nav { position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; height: 64px; background: rgba(0,0,0,0.95); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
         .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem; color: var(--white); letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; text-decoration: none; }
@@ -132,6 +136,8 @@ const html = `<!DOCTYPE html>
         .footer-col ul a { text-decoration: none; font-size: 0.82rem; color: var(--muted); transition: color 0.2s; }
         .footer-col ul a:hover { color: var(--text); }
         .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--muted); }
+        .footer-bottom a { color: inherit; text-decoration: none; transition: color 0.2s; }
+        .footer-bottom a:hover { color: var(--white); }
         
         .section-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); background: rgba(232, 73, 15, 0.15); border: 1px solid rgba(232, 73, 15, 0.3); padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; }
 

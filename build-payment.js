@@ -5,6 +5,8 @@ const index = fs.readFileSync('index.html', 'utf8');
 const navMatch = index.match(/<nav>[\s\S]*?<\/nav>/);
 let nav = navMatch ? navMatch[0] : '';
 nav = nav.replace('class="active"', '');
+nav = nav.replace('<li><a href="#">Account</a></li>', '<li><a href="account.html">Account</a></li>');
+nav = nav.replace('<li><a href="#">Tickets</a></li>', '<li><a href="tickets.html">Tickets</a></li>');
 
 const footerMatch = index.match(/<footer>[\s\S]*?<\/footer>/);
 let footer = footerMatch ? footerMatch[0] : '';
@@ -73,13 +75,29 @@ const js = `
     import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
     const qparams = new URLSearchParams(window.location.search);
-    const movieTitle = qparams.get('movie_title') || "Avatar: Fire and Ash";
+    
+    // Movie Data for lookup if title is missing
+    const moviesData = [
+      { id: 1, title: "Avatar: Fire and Ash" },
+      { id: 2, title: "Zootopia 2" },
+      { id: 3, title: "Project Hail Mary" },
+      { id: 4, title: "Hoppers" },
+      { id: 5, title: "GOAT" },
+      { id: 6, title: "Crime 101" },
+      { id: 7, title: "Peaky Blinders: The Immortal Man" },
+      { id: 8, title: "Scream 7" }
+    ];
+
+    const movieId = parseInt(qparams.get('id'));
+    const movieLookup = moviesData.find(m => m.id === movieId);
+    
+    const movieTitle = qparams.get('movie_title') || (movieLookup ? movieLookup.title : "Cinemart Movie");
     const cinema = qparams.get('cinema') || "SuperShow Cinema";
     const loc = qparams.get('location') || "TK";
     const hall = qparams.get('hall') || "Hall 1";
     const type = qparams.get('type') || "2D";
     const time = qparams.get('time') || "07:00 PM";
-    const date = "Today, 31 Mar"; 
+    const date = qparams.get('date') || "Today, 31 Mar"; 
     const seats = qparams.get('seats') || "E1, E2";
     const total = qparams.get('final_total') || qparams.get('ticket_total') || "0.00";
     const snacksRaw = qparams.get('snacks') || "";
@@ -140,13 +158,19 @@ const js = `
         correctLevel : QRCode.CorrectLevel.H
       });
 
+      const qDate = qparams.get('date') || "";
+      let numericDate = qDate;
+      if (!numericDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        numericDate = new Date().toISOString().split('T')[0];
+      }
+
       // 🔥 SAVE TO FIRESTORE 🔥
       try {
         const user = auth.currentUser;
         if (user) {
           await addDoc(collection(db, "tickets"), {
             uid: user.uid,
-            orderId, movieTitle, cinema, loc, hall, type, time, date, seats, total, snackList,
+            orderId, movieTitle, cinema, loc, hall, type, time, date, numericDate, seats, total, snackList,
             createdAt: serverTimestamp()
           });
           console.log("Ticket saved to Firestore!");
@@ -286,6 +310,8 @@ const html = `<!DOCTYPE html>
             --accent: #e8490f;
             --white: #ffffff;
         }
+        html { -ms-overflow-style: none; scrollbar-width: none; }
+        html::-webkit-scrollbar { display: none; }
         body { font-family: 'DM Sans', sans-serif; background: var(--black); color: var(--text); line-height: 1.6; overflow-x: hidden; }
         nav { position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; height: 64px; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
         .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem; color: var(--white); letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; text-decoration: none; }

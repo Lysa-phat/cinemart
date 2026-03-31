@@ -10,7 +10,7 @@
     href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
     rel="stylesheet" />
   <script type="module" src="auth-guard.js"></script>
-  <script type="module" src="cookie-consent.js"></script>
+  <script type="module" src="legals-init.js"></script>
   <style>
     *,
     *::before,
@@ -34,6 +34,12 @@
 
     html {
       scroll-behavior: smooth;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none;    /* Firefox */
+    }
+
+    html::-webkit-scrollbar {
+      display: none; /* Webkit */
     }
 
     body {
@@ -804,6 +810,95 @@
         grid-template-columns: 1fr;
       }
     }
+    /* ── TRAILER MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(24px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-container {
+      width: 100%;
+      max-width: 1000px;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-overlay.active .modal-container {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 24px;
+      right: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: var(--accent);
+      transform: rotate(90deg);
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .btn-trailer {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+      margin-top: 8px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .btn-trailer:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: white;
+    }
   </style>
 </head>
 
@@ -820,7 +915,7 @@
       <li><a href="movies.html">Movies</a></li>
       <li><a href="cinemas.html">Cinemas</a></li>
       <li><a href="tickets.html">Tickets</a></li>
-      <li><a href="#">Account</a></li>
+      <li><a href="account.html">Account</a></li>
     </ul>
   </nav>
 
@@ -833,8 +928,8 @@
       <h1>Movies ticket at your <span>fingertips</span></h1>
       <p>Book your favourite cinema tickets in seconds — any showtime, any seat, anywhere you are.</p>
       <div class="hero-btns">
-        <a href="#" class="btn-primary">Book Now</a>
-        <a href="#" class="btn-ghost">Browse Movies</a>
+        <a href="movies.html" class="btn-primary">Book Now</a>
+        <a href="movies.html" class="btn-ghost">Browse Movies</a>
       </div>
     </div>
     <div class="hero-poster">
@@ -855,7 +950,7 @@
       </div>
       <p>Jake Sully returns to Pandora for a desperate mission. He is abandoned by the Na'vi and must decide where his
         true loyalties lie — with his family, or with the world that adopted him.</p>
-      <a href="#" class="btn-primary">Book Now</a>
+      <a href="booking.html" class="btn-primary">Book Now</a>
     </div>
     <div class="featured-poster">
       <img src="avatar-fire-and-ash.jpg" alt="Avatar: Fire and Ash"
@@ -870,7 +965,7 @@
         <p class="section-tag">Now in Cinemas</p>
         <h2>Showing This Week</h2>
       </div>
-      <a href="#" class="see-all">See all movies →</a>
+      <a href="movies.html" class="see-all">See all movies →</a>
     </div>
 
     <div class="movies-grid">
@@ -881,11 +976,14 @@
           <img src="zootopia2.jpeg" alt="Zootopia 2" style="width:100%;height:100%;object-fit:cover;display:block;">
           <span class="card-rating">★ 8.1</span>
           <div class="poster-overlay">
-            <a href="#" class="btn-primary">Book Ticket</a>
+            <div style="display:flex; flex-direction:column; width:100%;">
+              <a href="movie-details.html?id=2" class="btn-primary" style="text-align:center;">Book Ticket</a>
+              <button class="btn-trailer" onclick="openTrailer('BjkIOU5PhyQ?si=C23LSlMY5VslQ_Qo')">Watch Trailer</button>
+            </div>
           </div>
         </div>
         <div class="card-body">
-          <p class="card-genre">Animation · Comedy</p>
+          <p class="card-genre">Animation · Comedy | 115m</p>
           <h3 class="card-title">Zootopia 2</h3>
           <p class="card-desc">Rookie cop Judy Hopps and her unlikely partner Nick Wilde make a thrilling return to
             Zootopia City. Zootopia's beloved Mayor Gazelle is on the brink of a great mystery where Gary the Gazelle
@@ -900,11 +998,14 @@
             style="width:100%;height:100%;object-fit:cover;display:block;">
           <span class="card-rating">★ 9.0</span>
           <div class="poster-overlay">
-            <a href="#" class="btn-primary">Book Ticket</a>
+            <div style="display:flex; flex-direction:column; width:100%;">
+              <a href="movie-details.html?id=3" class="btn-primary" style="text-align:center;">Book Ticket</a>
+              <button class="btn-trailer" onclick="openTrailer('m08TxIsFTRI?si=yM4bfYaqDsaNwoVm')">Watch Trailer</button>
+            </div>
           </div>
         </div>
         <div class="card-body">
-          <p class="card-genre">Sci-Fi · Drama</p>
+          <p class="card-genre">Sci-Fi · Drama | 145m</p>
           <h3 class="card-title">Project Hail Mary</h3>
           <p class="card-desc">Science teacher Ryland Grace wakes up in a spacecraft with no memory of how or why he got
             there — only to discover he is Earth's last hope against an interstellar catastrophe.</p>
@@ -917,15 +1018,17 @@
           <img src="hoppers.jpg" alt="Hoppers" style="width:100%;height:100%;object-fit:cover;display:block;">
           <span class="card-rating">★ 7.8</span>
           <div class="poster-overlay">
-            <a href="#" class="btn-primary">Book Ticket</a>
+            <div style="display:flex; flex-direction:column; width:100%;">
+              <a href="movie-details.html?id=4" class="btn-primary" style="text-align:center;">Book Ticket</a>
+              <button class="btn-trailer" onclick="openTrailer('PypDSyIRRSs?si=Q-0CKVSxe2PPxoxt')">Watch Trailer</button>
+            </div>
           </div>
         </div>
         <div class="card-body">
-          <p class="card-genre">Animation · Adventure</p>
+          <p class="card-genre">Animation · Adventure | 102m</p>
           <h3 class="card-title">Hoppers</h3>
           <p class="card-desc">When scientists discover a way to transform massive cosmic/quantum particles into natural
-            animals, Marvel uses the new technology to uncover mysteries that put the world in peril — and they find the
-            world has never been so imagined.</p>
+            animals, Marvel uses the new technology to uncover mysteries that put the world in peril.</p>
         </div>
       </div>
 
@@ -939,8 +1042,8 @@
       <h2>Lights. Camera. Book Now.</h2>
       <p>Skip the queue. Choose your seat. Enjoy the show.</p>
       <div class="cta-btns">
-        <a href="#" class="btn-primary">Book Now</a>
-        <a href="#" class="btn-ghost">Browse all shows</a>
+        <a href="movies.html" class="btn-primary">Book Now</a>
+        <a href="movies.html" class="btn-ghost">Browse all shows</a>
       </div>
     </div>
     <div class="cta-visual">
@@ -1041,10 +1144,52 @@
 
     <div class="footer-bottom">
       <span>© 2026 Cinemart. All rights reserved.</span>
-      <span>Privacy · Terms · Cookies</span>
+      <span>
+        <a href="privacy.html">Privacy</a> ·
+        <a href="terms.html">Terms</a> ·
+        <a href="privacy.html#cookies-section">Cookies</a>
+      </span>
     </div>
   </footer>
 
+  <!-- TRAILER MODAL -->
+  <div id="trailerModal" class="modal-overlay">
+    <button class="modal-close" onclick="closeTrailer()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+    <div class="modal-container" id="trailerContainer">
+      <!-- Player will be injected here -->
+    </div>
+  </div>
+
+  <script>
+    function openTrailer(videoId) {
+      const modal = document.getElementById('trailerModal');
+      const container = document.getElementById('trailerContainer');
+      container.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10);
+    }
+
+    function closeTrailer() {
+      const modal = document.getElementById('trailerModal');
+      const container = document.getElementById('trailerContainer');
+      modal.classList.remove('active');
+      setTimeout(() => {
+        modal.style.display = 'none';
+        container.innerHTML = '';
+      }, 400);
+    }
+
+    // Close on overlay click
+    document.getElementById('trailerModal').addEventListener('click', (e) => {
+      if (e.target.id === 'trailerModal') closeTrailer();
+    });
+  </script>
 </body>
 
 </html>

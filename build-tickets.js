@@ -4,6 +4,7 @@ const index = fs.readFileSync('index.html', 'utf8');
 
 const navMatch = index.match(/<nav>[\s\S]*?<\/nav>/);
 let nav = navMatch ? navMatch[0] : '';
+nav = nav.replace('<li><a href="#">Account</a></li>', '<li><a href="account.html">Account</a></li>');
 nav = nav.replace('<li><a href="#">Tickets<\/a><\/li>', '<li><a href="tickets.html" class="active">Tickets<\/a><\/li>');
 
 const footerMatch = index.match(/<footer>[\s\S]*?<\/footer>/);
@@ -79,10 +80,25 @@ const js = `
 
     async function loadTickets(uid) {
       try {
-        const q = query(collection(db, "tickets"), where("uid", "==", uid), orderBy("createdAt", "desc"));
+        const q = query(collection(db, "tickets"), where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
         
-        if (querySnapshot.empty) {
+        let docs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        // --- 🕒 AUTOMATED TICKET EXPIRY FILTER ---
+        const now = new Date();
+        const todayStr = now.toISOString().split('T')[0];
+        
+        // Only keep tickets that are today or in the future
+        docs = docs.filter(t => {
+          if (!t.numericDate) return true; // Keep old tickets without numericDate for now or remove if strictly cleaned
+          return t.numericDate >= todayStr;
+        });
+
+        // Sort in JS to avoid needing a Composite Index
+        docs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+        if (docs.length === 0) {
           ticketsGrid.innerHTML = \`
             <div class="no-tickets">
               <p>You haven't booked any tickets yet. Time for a movie?</p>
@@ -93,8 +109,7 @@ const js = `
         }
 
         let html = '';
-        querySnapshot.forEach((doc) => {
-          const t = doc.data();
+        docs.forEach((t) => {
           html += \`
             <div class="ticket-card">
               <div class="ticket-card-header">
@@ -111,13 +126,13 @@ const js = `
                 </div>
               </div>
               <div class="ticket-card-footer">
-                <button class="btn-view" onclick="openTicketModal('\${doc.id}')">View Full Ticket</button>
+                <button class="btn-view" onclick="openTicketModal('\${t.id}')">View Full Ticket</button>
               </div>
             </div>
           \`;
         });
         ticketsGrid.innerHTML = html;
-        window.allTickets = querySnapshot.docs.map(d => ({id: d.id, ...d.data()}));
+        window.allTickets = docs;
       } catch (err) {
         console.error("Error loading tickets:", err);
       }
@@ -255,6 +270,8 @@ const html = `<!DOCTYPE html>
             --accent: #e8490f;
             --white: #ffffff;
         }
+        html { -ms-overflow-style: none; scrollbar-width: none; }
+        html::-webkit-scrollbar { display: none; }
         body { font-family: 'DM Sans', sans-serif; background: var(--black); color: var(--text); line-height: 1.6; overflow-x: hidden; }
         nav { position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; height: 64px; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
         .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem; color: var(--white); letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; text-decoration: none; }

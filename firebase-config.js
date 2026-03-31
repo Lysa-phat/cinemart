@@ -3,13 +3,13 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBAzpQEqbYoZW8a9qvmiwR9QJnbO1FxbFo",
-  authDomain: "cinemart-ticket-booking.firebaseapp.com",
-  projectId: "cinemart-ticket-booking",
-  storageBucket: "cinemart-ticket-booking.firebasestorage.app",
-  messagingSenderId: "274952909081",
-  appId: "1:274952909081:web:5341ac23f179fd521a9588",
-  measurementId: "G-9W81QG5WZ4"
+  apiKey: "AIzaSyBvvGVXQVCfItHCeZZI1mMjmc-dzPSMlao",
+  authDomain: "cinemart-ticket-service.firebaseapp.com",
+  projectId: "cinemart-ticket-service",
+  storageBucket: "cinemart-ticket-service.firebasestorage.app",
+  messagingSenderId: "1066002281166",
+  appId: "1:1066002281166:web:3d2af8e26997d1b11e569f",
+  measurementId: "G-SMJJ74RV6N"
 };
 
 const app = initializeApp(firebaseConfig);

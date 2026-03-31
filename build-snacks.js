@@ -5,6 +5,7 @@ const index = fs.readFileSync('index.html', 'utf8');
 const navMatch = index.match(/<nav>[\s\S]*?<\/nav>/);
 let nav = navMatch ? navMatch[0] : '';
 nav = nav.replace('class="active"', '');
+nav = nav.replace('<li><a href="#">Account</a></li>', '<li><a href="account.html">Account</a></li>');
 nav = nav.replace('<li><a href="#">Tickets</a></li>', '<li><a href="tickets.html">Tickets</a></li>');
 
 const footerMatch = index.match(/<footer>[\s\S]*?<\/footer>/);
@@ -372,13 +373,9 @@ const html = `<!DOCTYPE html>
             --accent: #e8490f;
             --white: #ffffff;
         }
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--black);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+        html { -ms-overflow-style: none; scrollbar-width: none; }
+        html::-webkit-scrollbar { display: none; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--black); color: var(--text); line-height: 1.6; overflow-x: hidden; }
         nav { position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; height: 64px; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
         .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem; color: var(--white); letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .logo img { height: 28px; width: auto; }

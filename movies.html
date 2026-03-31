@@ -51,6 +51,93 @@
       scrollbar-width: none;
     }
 
+    /* ── TRAILER MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(24px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-container {
+      width: 100%;
+      max-width: 1000px;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-overlay.active .modal-container {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 24px;
+      right: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: var(--accent);
+      transform: rotate(90deg);
+    }
+
+    .modal-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .btn-trailer {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+      margin-top: 8px;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-trailer:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: white;
+    }
+
     /* ── NAV ── */
     nav {
       position: sticky;
@@ -895,7 +982,9 @@
           { name: "SuperShow Cinema", locations: ["TK", "FunMall"], theatreTypes: ["2D", "3D", "4DX"] },
           { name: "MultiplexCity", locations: ["Aeon1"], theatreTypes: ["2D", "3D", "ScreenX"] }
         ],
-        releaseDate: "2025-12-19"
+        releaseDate: "2025-12-19",
+        runtime: "192m",
+        trailerId: "d9MyW72ELq0"
       },
       {
         id: 2,
@@ -907,7 +996,9 @@
           { name: "MultiplexCity", locations: ["Aeon1", "Aeon2", "KMall"], theatreTypes: ["2D", "3D"] },
           { name: "Happy Cinema", locations: ["Aeon2", "Sorya Mall"], theatreTypes: ["2D", "4DX", "ScreenX"] }
         ],
-        releaseDate: "2025-11-26"
+        releaseDate: "2025-11-26",
+        runtime: "115m",
+        trailerId: "BjkIOU5PhyQ"
       },
       {
         id: 3,
@@ -920,7 +1011,9 @@
           { name: "MultiplexCity", locations: ["Aeon3", "KMall"], theatreTypes: ["2D", "3D"] },
           { name: "Happy Cinema", locations: ["Aeon3", "Noro Mall"], theatreTypes: ["2D", "3D", "4DX"] }
         ],
-        releaseDate: "2025-12-05"
+        releaseDate: "2025-12-05",
+        runtime: "145m",
+        trailerId: "m08TxIsFTRI"
       },
       {
         id: 4,
@@ -932,7 +1025,63 @@
           { name: "Happy Cinema", locations: ["Aeon2", "Sorya Mall", "Noro Mall"], theatreTypes: ["2D", "3D"] },
           { name: "MultiplexCity", locations: ["Aeon2"], theatreTypes: ["2D", "3D", "ScreenX"] }
         ],
-        releaseDate: "2025-10-15"
+        releaseDate: "2025-10-15",
+        runtime: "102m",
+        trailerId: "PypDSyIRRSs"
+      },
+      {
+        id: 5,
+        title: "GOAT",
+        genre: "Animation / Sports / Comedy",
+        rating: "TBA",
+        image: "goat.jpg",
+        cinemas: [
+          { name: "SuperShow Cinema", locations: ["TK", "Aeon1"], theatreTypes: ["2D", "4DX"] },
+          { name: "MultiplexCity", locations: ["KMall"], theatreTypes: ["2D"] }
+        ],
+        releaseDate: "2026-02-13",
+        runtime: "98m",
+        trailerId: "5r-7eWDBc40"
+      },
+      {
+        id: 6,
+        title: "Crime 101",
+        genre: "Crime / Thriller",
+        rating: "TBA",
+        image: "Crime_101_(2026_film)_poster.jpg",
+        cinemas: [
+          { name: "SuperShow Cinema", locations: ["FunMall"], theatreTypes: ["2D", "ScreenX"] },
+          { name: "MultiplexCity", locations: ["Aeon1"], theatreTypes: ["2D", "3D"] }
+        ],
+        releaseDate: "2026-02-13",
+        runtime: "140m",
+        trailerId: "f5y-cziwmMw"
+      },
+      {
+        id: 7,
+        title: "Peaky Blinders: The Immortal Man",
+        genre: "Crime / Drama",
+        rating: "TBA",
+        image: "peakyblinder.jpg",
+        cinemas: [
+          { name: "MultiplexCity", locations: ["Aeon3"], theatreTypes: ["2D", "3D", "ScreenX"] }
+        ],
+        releaseDate: "2026-03-20",
+        runtime: "112m",
+        trailerId: "lcvUGs3xaDM"
+      },
+      {
+        id: 8,
+        title: "Scream 7",
+        genre: "Horror / Slasher",
+        rating: "TBA",
+        image: "scream7.jpg",
+        cinemas: [
+          { name: "Happy Cinema", locations: ["Aeon2", "Noro Mall"], theatreTypes: ["2D", "4DX"] }
+        ],
+        releaseDate: "2026-02-27",
+        runtime: "114m",
+        trailerId: "UJrghaPJ0RY"
       }
     ];
 
@@ -986,11 +1135,18 @@
             <img src="${movie.image}" alt="${movie.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22360%22%3E%3Crect fill=%22%231a1a1a%22 width=%22240%22 height=%22360%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E'">
             <span class="card-rating">★ ${movie.rating}</span>
             <div class="poster-overlay">
-              <a href="movie-details.html?id=${movie.id}${queryString}" class="btn-primary">Book Ticket</a>
+              <div style="width: 100%;">
+                <a href="${movie.releaseDate > new Date().toISOString().split('T')[0] ? '#' : `movie-details.html?id=${movie.id}${queryString}`}" 
+                   class="btn-primary" 
+                   style="${movie.releaseDate > new Date().toISOString().split('T')[0] ? 'opacity: 0.6; cursor: not-allowed;' : ''}">
+                  ${movie.releaseDate > new Date().toISOString().split('T')[0] ? 'Coming Soon' : 'Book Ticket'}
+                </a>
+                ${movie.trailerId ? `<button class="btn-trailer" onclick="openTrailer('${movie.trailerId}')">Watch Trailer</button>` : ''}
+              </div>
             </div>
           </div>
           <div class="card-body">
-            <p class="card-genre">${movie.genre}</p>
+            <p class="card-genre">${movie.genre} ${movie.runtime ? `| ${movie.runtime}` : ''}</p>
             <h3 class="card-title">${movie.title}</h3>
             <div class="card-desc" style="display: block; overflow: visible;">
               ${movie.cinemas.map(c => `<div style="margin-bottom: 8px;"><strong>${c.name}:</strong> ${c.locations.join(', ')}<br><span style="color: var(--accent); font-size: 0.9em;">${c.theatreTypes.join(', ')}</span></div>`).join('')}
@@ -1096,6 +1252,45 @@
         datePicker.scrollLeft += e.deltaY > 0 ? 100 : -100;
       });
     }
+  </script>
+
+  <!-- TRAILER MODAL -->
+  <div id="trailerModal" class="modal-overlay">
+    <button class="modal-close" onclick="closeTrailer()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+    <div class="modal-container" id="trailerContainer">
+      <!-- Player will be injected here -->
+    </div>
+  </div>
+
+  <script>
+    function openTrailer(videoId) {
+      const modal = document.getElementById('trailerModal');
+      const container = document.getElementById('trailerContainer');
+      container.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10);
+    }
+
+    function closeTrailer() {
+      const modal = document.getElementById('trailerModal');
+      const container = document.getElementById('trailerContainer');
+      modal.classList.remove('active');
+      setTimeout(() => {
+        modal.style.display = 'none';
+        container.innerHTML = '';
+      }, 400);
+    }
+
+    // Close on overlay click
+    document.getElementById('trailerModal').addEventListener('click', (e) => {
+      if (e.target.id === 'trailerModal') closeTrailer();
+    });
 
     // Custom Dropdown logic
     document.querySelectorAll('.custom-dropdown').forEach(dropdown => {

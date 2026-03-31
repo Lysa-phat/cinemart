@@ -6,7 +6,7 @@
     <title>Sign In — Cinemart</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-    <script type="module" src="cookie-consent.js"></script>
+    <script type="module" src="legals-init.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
@@ -21,7 +21,8 @@
         }
         
     ::-webkit-scrollbar { display: none; }
-    * { -ms-overflow-style: none; scrollbar-width: none; }
+    html { scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
 
     body { font-family: 'DM Sans', sans-serif; background: var(--black); color: var(--text); line-height: 1.6; overflow: hidden; height: 100vh; display: flex; margin: 0; }
     
@@ -33,6 +34,9 @@
     .auth-visual-content p { color: rgba(255,255,255,0.7); font-size: 1.2rem; }
 
     .auth-form-side { flex: 0.8; display: flex; align-items: center; justify-content: center; padding: 40px; background: var(--black); position: relative; overflow-y: auto; }
+    
+    .screen-curve { height: 48px; width: 100%; max-width: 600px; margin: 0 auto; border-top: 4px solid rgba(220, 38, 38, 0.8); border-radius: 50% 50% 0 0 / 100% 100% 0 0; box-shadow: 0 -15px 40px -10px rgba(220, 38, 38, 0.5); margin-bottom: 20px; }
+    .screen-text { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; letter-spacing: 0.1em; color: var(--white); }
     
     .auth-container { max-width: 480px; width: 100%; padding: 0; background: transparent; border: none; box-shadow: none; margin: 0; }
     .auth-title { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; text-align: left; margin-bottom: 16px; color: var(--white); }

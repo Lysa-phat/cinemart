@@ -5,6 +5,7 @@ const index = fs.readFileSync('index.html', 'utf8');
 const navMatch = index.match(/<nav>[\s\S]*?<\/nav>/);
 let nav = navMatch ? navMatch[0] : '';
 nav = nav.replace('class="active"', '');
+nav = nav.replace('<li><a href="#">Account</a></li>', '<li><a href="account.html">Account</a></li>');
 nav = nav.replace('<li><a href="#">Tickets</a></li>', '<li><a href="tickets.html">Tickets</a></li>');
 
 const footerMatch = index.match(/<footer>[\s\S]*?<\/footer>/);
@@ -83,7 +84,11 @@ const js = `
       { id: 1, title: "Avatar: Fire and Ash" },
       { id: 2, title: "Zootopia 2" },
       { id: 3, title: "Project Hail Mary" },
-      { id: 4, title: "Hoppers" }
+      { id: 4, title: "Hoppers" },
+      { id: 5, title: "GOAT" },
+      { id: 6, title: "Crime 101" },
+      { id: 7, title: "Peaky Blinders: The Immortal Man" },
+      { id: 8, title: "Scream 7" }
     ];
 
     let basePrice = 8.00;
@@ -224,6 +229,7 @@ const js = `
       const type = params.get('type') || '2D';
       const hall = params.get('hall') || '';
       const time = params.get('time') || '07:00 PM';
+      const date = params.get('date') || 'Today, 31 Mar';
 
       // Setup prices
       if (type === '2D' || type === '3D') {
@@ -238,11 +244,12 @@ const js = `
       if (movie) {
         document.getElementById('bTitle').textContent = movie.title;
         document.getElementById('bMeta').textContent = \`\${cinema} — \${loc} Branch \${hall ? '| ' + hall : ''}\`;
-        document.getElementById('bDetails').textContent = \`\${type} Format | Today at \${time}\`;
+        document.getElementById('bDetails').textContent = \`\${type} Format | \${date} at \${time}\`;
       } else {
-        document.getElementById('bTitle').textContent = "Movie Selection";
+        const title = params.get('movie_title') || "Movie Selection";
+        document.getElementById('bTitle').textContent = title;
         document.getElementById('bMeta').textContent = \`\${cinema} — \${loc} Branch \${hall ? '| ' + hall : ''}\`;
-        document.getElementById('bDetails').textContent = \`\${type} Format | Today at \${time}\`;
+        document.getElementById('bDetails').textContent = \`\${type} Format | \${date} at \${time}\`;
       }
 
       generateSeatMap();
@@ -250,6 +257,11 @@ const js = `
 
     document.getElementById('checkoutBtn').addEventListener('click', function() {
       const params = new URLSearchParams(window.location.search);
+      const movieTitle = document.getElementById('bTitle').textContent;
+      const movieDate = params.get('date') || 'Today, 31 Mar';
+      
+      params.set('movie_title', movieTitle);
+      params.set('date', movieDate);
       params.set('seats', selectedSeats.join(','));
       params.set('ticket_total', (selectedSeats.length * basePrice).toFixed(2));
       window.location.href = 'snacks.html?' + params.toString();
@@ -299,7 +311,7 @@ const html = `<!DOCTYPE html>
   <link rel="icon" type="image/png" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <script type="module" src="auth-guard.js"></script>
-  <script type="module" src="cookie-consent.js"></script>
+  <script type="module" src="legals-init.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
